@@ -25,9 +25,9 @@ jobs:
       run: npm run build
     
     - name: SonarQube Scan
-      uses: sonarsource/sonarqube-scan-action@master
+      uses: SonarSource/sonarqube-scan-action@v2.1.0
       with:
-        projectBaseDir: .
+        projectBaseDir: /components
         args: >
           -Dsonar.organization=test-org
           -Dsonar.projectKey=my-React-app
