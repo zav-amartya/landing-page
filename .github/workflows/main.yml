@@ -33,4 +33,4 @@ jobs:
           -Dsonar.projectKey=my-React-app
       env:
         SONAR_TOKEN: sqa_48608025742d43601133a3e06cb09e3eda6bbc5b
-        SONAR_HOST_URL: https://sonar.zavior.app
+        SONAR_HOST_URL: http://52.187.170.197:9000/
