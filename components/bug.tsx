@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import './App.css';
 
 const App: React.FC = () => {
+// ??
   const [param, setParam] = useState<number>(0);
 
   // Missing default clause in switch statement

@@ -1,36 +1,64 @@
-name: CI/CD workflow for npm Build and Sonar Code scan
+# name: CI/CD workflow for npm Build and Sonar Code scan
+
+# on:
+#   push:
+#     branches:
+#       - main
+#   workflow_dispatch:
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v3
+      
+#     - name: Set up Node.js
+#       uses: actions/setup-node@v3
+#       with:
+#         node-version: 'latest'  # Specify the Node.js version you need
+        
+#     - name: Install dependencies
+#       run: npm install --legacy-peer-deps
+      
+#     - name: Build with npm
+#       run: npm run build
+    
+    # - name: SonarQube Scan
+    #   uses: SonarSource/sonarqube-scan-action@v2.1.0
+    #   with:
+    #     projectBaseDir: /components
+    #     args: >
+    #       -Dsonar.organization=test-org
+    #       -Dsonar.projectKey=my-React-app
+    #   env:
+    #     SONAR_TOKEN: sqa_48608025742d43601133a3e06cb09e3eda6bbc5b
+    #     SONAR_HOST_URL: http://52.187.170.197:9000/
+
+name: Build
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
+
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 'latest'  # Specify the Node.js version you need
-        
-    - name: Install dependencies
-      run: npm install --legacy-peer-deps
-      
-    - name: Build with npm
-      run: npm run build
-    
-    - name: SonarQube Scan
-      uses: SonarSource/sonarqube-scan-action@v2.1.0
-      with:
-        projectBaseDir: /components
-        args: >
-          -Dsonar.organization=test-org
-          -Dsonar.projectKey=my-React-app
-      env:
-        SONAR_TOKEN: sqa_48608025742d43601133a3e06cb09e3eda6bbc5b
-        SONAR_HOST_URL: http://52.187.170.197:9000/
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: sqa_48608025742d43601133a3e06cb09e3eda6bbc5b
+          SONAR_HOST_URL: http://52.187.170.197:9000/
+
+      # If you wish to fail your job when the Quality Gate is red, uncomment the
+      # following lines. This would typically be used to fail a deployment.
+      # - uses: sonarsource/sonarqube-quality-gate-action@master
+      #   timeout-minutes: 5
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
