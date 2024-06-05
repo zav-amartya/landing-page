@@ -1,30 +1,50 @@
-"use client"
-
+"use state"
 import React, { useState } from 'react';
 import './App.css';
 
-function Bug() {
-  const [input, setInput] = useState('');
+const App: React.FC = () => {
+  const [param, setParam] = useState<number>(0);
 
-  // Insecure way of handling user input, vulnerable to XSS
-  const handleChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-    setInput(e.target.value);
+  // Missing default clause in switch statement
+  const checkParamMissingDefault = (param: number) => {
+    switch (param) {
+      case 0:
+        console.log('Case 0');
+        break;
+      case 1:
+        console.log('Case 1');
+        break;
+      // No default clause
+    }
   };
 
-  // Insecure function usage, eval should be avoided
-  const handleClick = () => {
-    eval(input);
+  // Default clause not being the last one
+  const checkParamDefaultNotLast = (param: number) => {
+    switch (param) {
+      default: // Default clause should be the last one
+        console.log('Default case');
+        break;
+      case 0:
+        console.log('Case 0');
+        break;
+      case 1:
+        console.log('Case 1');
+        break;
+    }
   };
 
   return (
     <div className="App">
       <header className="App-header">
         <h1>Vulnerable React App</h1>
-        <input type="text" value={input} onChange={handleChange} />
-        <button onClick={handleClick}>Execute</button>
+        <div>
+          <h2>Switch Statement Vulnerabilities</h2>
+          <button onClick={() => checkParamMissingDefault(param)}>Check Param (Missing Default)</button>
+          <button onClick={() => checkParamDefaultNotLast(param)}>Check Param (Incorrect Default)</button>
+        </div>
       </header>
     </div>
   );
 }
 
-export default Bug;
+export default App;
